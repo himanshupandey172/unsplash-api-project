@@ -1,0 +1,42 @@
+
+//Figure out User's current latitude and current month
+
+class App extends React.Component {
+  state = { lat: null, long: null, errorMessage: "" }; //State object for latitude,longitude,error message
+
+  componentDidMount() {
+    console.log("component did mount was called");
+    window.navigator.geolocation.getCurrentPosition(
+      //this method returns first object as position
+      (position) =>
+        this.setState({
+          lat: position.coords.latitude, //Use position object to get value of latitude
+          long: position.coords.longitude, //Use position object to get value of longitude
+        }),
+      (err) => this.setState({ errorMessage: err.message }) //Second object of this method is error object, which gives err.message
+    );
+  }
+
+  componentDidUpdate() {
+    console.log("component gets updated or rerendered - multiple times");
+  }
+
+  renderContent() {
+    if (this.state.lat || (this.state.long && !this.state.errorMessage)) {
+      return (
+        <div>
+          <SeasonDisplay lat={this.state.lat} />
+        </div>
+      );
+    }
+    if ((this.state.errorMessage && !this.state.lat) || this.state.long) {
+      return <div>Error : {this.state.errorMessage}</div>;
+    }
+
+    return <Spinner />;
+  }
+
+  render() {
+    return <div className="boder red">{this.renderContent()}</div>;
+  }
+}

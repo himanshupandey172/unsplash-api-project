@@ -1,0 +1,931 @@
+I am going into the world of react to make the world enter into the realm of useful and beautiful applications.
+
+16 july 22:
+
+Today i start 4 month long journey on learning everything about react and then testing my knowledge giving different mock-tests / interviews.
+
+question:
+1. How does react distinguish between react components and HTML elements while rendering on DOM?
+A>Components names start with uppercase and html elements with lowercase.
+
+ 
+2. What is component nesting:
+In React, we can nest components inside within one another. This helps in creating more complex User Interfaces. The components that are nested inside parent components are called child components. Import and Export keywords facilitate nesting of the components.
+
+3. How a React App Start?
+Ans> Its a three step process:-
+
+a. All of our projects's JS files are bunled together into a single file and then placed onto a server which users can access via their browser.(Its also called App bundle)
+
+b. User makes a request to the server and gets an HTML file+ the bundle.
+The HTML file does not have a lot of content inside it, just some link tags and script tag which tells the browser to fetch some addtional JS files from the server. So then browser sends another request and get bundle.js in return, which will be loaded onto the browser and then executed.
+
+c. User's browser executes our code.
+It starts from index.js which also has three steps:
+-->Find the div with id of 'root" which is inside a <body> tag of index.html
+const rootElement = document.getElementbyId("root")
+
+-->Tell React to take control of that root element and we will be rendering our application inside that root element.
+const root = createRoot(rootElement) 
+
+--> Tell react to get JSX from the App component , turn it into HTML and show it in root.
+root.render(<App/>).
+
+4. What are useState functions?
+Ans>
+a. useState is a function that works with React's "State" system.
+b. State is like a variable in React.
+c. State is used to Store Data that changes over time.
+d. Whenever State changes , React automaticallt updates content on the screen.
+
+Example:
+A basic language translation app has three pieces of Data that changes:-
+--> Text that user typed into the <input/>(change input)
+const [text, setText] = useState('')
+
+--> Language the user wanted to translate text into(change language).
+const [languag, setLanguage] = useState('es')
+
+--> Result of translation(change output)
+const [translated, setTranslated] = useState("")
+
+
+5. How the text gets translated into another language in translate app?
+Ans>
+--> We are feeding two pieces of Data "Text from Input" and selected Language to Translate component.
+
+--> This componenent is set up to watch change in the values of these two variables and whenever they change it makes a request to google translate API.
+
+--> When it get reponse from that API, result is displayed on the screen.
+
+________________________________________________________________________________________________________________________________________________________
+
+17 july 22
+
+Note: To see the information of every file in default create-react-app.
+Watch= what is create-react-app(lecture-9)
+
+
+Q.why are we running something at our terminal  
+
+A> 
+a.There are a couple of files in our project like index.js/App.js/reportWebVitals.js. All these files contain code in JSX that a browser does not know how to execute.
+
+b. So we have to transpile it into JS so that we can safely run the code inside our browser.
+
+c. The thing we are running in terminal, that is doing this whole process is our development server. So it runs a couple of tools like Babel and Webpack.
+
+d. Babel turns JSX into normal JS code and Webpack merge all project files into a single file(bundle.js).
+
+
+
+Q. What are the 5 absolute required files in a react project?
+A>
+There are 4 files and 1 folder that contains all dependencies aur app needs:
+
+index.js --> First file that gets executed when our App runs.
+
+index.html--> Skeleton for the react app.
+
+package.json --> Lists dependencies our app needs.
+
+package-lock.json--> Lists dependencies our app needs.
+
+node-modules--> Contains dependencies our app needs.
+
+
+
+Q. Process to create a component and render on the screen?
+A>
+a. Import the React and ReactDOM libraries.
+import React from "react"
+import ReactDOM from "react-dom/client"
+
+b. Get a reference to the div with ID root.
+const el = document.getElementbyId("root")
+
+c. Tell React to take control of that element.
+const root = ReactDOM.createRoot(el)
+
+d. Create a component.
+function App() {
+ 	return <h1>Hi There!</h1>
+}
+
+
+e. Show the component on the screen.
+root.render(<App/>);
+
+Q. Difference between React and ReactDOM?
+A>
+a. React --> Library that defines what a component is and how multiple components work together.
+
+b. ReactDOM--> Library that knows how to get a component to show up in the browser. It converts components into HTML and render them on the browser.
+
+To show React components on different environments , React developers used different libraries(For mobile ReactNative).
+
+
+
+
+Q. How does our browser understand JSX code from react even though it only supports HTML,CSS , and plain JS?
+A>
+
+a. JSX is what we write inside and return from our component , what we want to display on the screen.
+<h1>Hi There!</h1>
+
+b. Then it passes through a tool called Babel which converts it into 
+equivalent JS that our browser can understand.
+React.createElement("h1",null,"Hi There!")
+
+c. If we actually pass valid values from React.createElement function , we get a JSON object in return 
+{
+ key:null,
+ props:{children:"Hi There!"},
+ type:h1
+ etc...
+}
+
+d. To understand how babel is doing it, we can use a tool like babeljs.io/repl
+
+
+Q. Example to show, how can we render dynamic values on screen based on compuation/user input/network request etc..?
+A>
+
+function Hello(){
+   let message = "Bye There";
+   
+   if (Math.random() > 0.5)
+   {
+    message = "Hello There"
+   }
+   return <h1>{message}</h1>
+   
+}
+
+-->Here we declare a variable with string value.
+-->If random value is greater than 0.5 , I will change the message.
+-->We use {} curly braces and reference our variable in it.
+
+The curly braces are the important part here, It tells react to find it and stick it in.
+
+This curly brace syntax is only good for displaying numbers and string when it comes to display boolean/null/undefined/array/object etc..it does not show anything or show unexpected behaviour or errors.
+
+
+Q. What happens when we try to show an object as text content?
+
+A>Most common error we encounter is when we try to directly show an Object inside the {} of JSX.
+
+"Objects are not valid as React children".
+
+
+Q. Can we directly write an expression inside JSX?
+
+Yes, We can. 
+
+for example  
+
+function Hello(){
+   const date = new Date(); //create date object using new Date()
+   const time = date.toLocaleTimeString(); //get current time using toLocaleTimeString method of date object.
+   
+   return <h1>{time}</h1>
+}
+
+But, We don't always have to declare a variable ahead of time and then reference that inside JSX.
+
+We can use the entire expression directly inside JSX.
+
+function Hello(){  
+   return <h1>{new Date().toLocaleTimeString()}</h1>
+}
+
+
+Q. What is a basic layout inside a react component?
+A>
+
+There are Basically two things inside a react component.
+
+function Hello(){
+   let message = "Hello"   (a).Code to compute value we want to show 
+   let sum = 1+1                  inside JSX
+   
+
+   return <div> 	    (b). Content we want component to show                   
+         <h1>Message is :{message}</h1>
+         <h2>Sum is {sum}</h2>
+   
+	</div>
+}
+
+
+____________________________________________________________________________________________________________________________________________________________________________________________________________________________________18 july 22:
+
+Q. What are props?
+A>
+a. Props which is short for properties are used in React to customize components, which is very similar to attributes in HTML elements.
+
+b. Suppose we want to show a input on our React application. We can use 
+<input/> as a React component inside JSX to do the same, that's pretty straightforward.
+But If we want only numbers to be entered in our input field than we will use prop of <input/> component for this purpose.
+
+c. <input type= "number"/> . Here type is the prop or property that we want to customize and "number" is its relative value.  
+
+d. We can also give it other props like min and max 
+<input type="number" min={0} max={5}/>
+
+
+Q. How do you define variables/numbers/Strings etc in props?
+A>
+a. Variables: We can define our variables inside component and outside JSX expression. But when we want to use variable as props then we need to use {curly braces}
+
+ example:
+function Hello(){
+   const minimum = 0
+
+   return <div>
+         <input type="number" min={minimum} max={5}/>
+   </div>
+}
+
+
+b. Strings: Strings should always be wrapped in double quotes.
+example: type="number"
+
+c. Numbers: Wrap with curly braces.
+example: min = {10}
+
+d. Arrays: Wrap with Curly braces.
+example: list={[1,2,3]}
+
+e. Objects: Wrap with curly braces.
+example: style={{color:red}}  --> Notice two braces outer {} is related to JSX and inner {}  is related to object itself. 
+
+Note: Objects can be given as props but can't be displayed directly on the screen. So using object direcly between a JSX expression will give an error.
+--> Object is not a valid react child.
+
+
+Q. What are the rules when we provide props/values to JSX?
+A>
+a. All prop names follow camelCase notation.
+maxlength ---> maxLength
+autocapitalize ---> autoCapitalize
+novalidate ---> noValidate
+React will give very clear warning if we use wrong ones
+
+b. Number attributes use curly braces.
+
+c. Boolean 'true' can be written with just the property name. "false" should be written with curly braces.
+<input spellCheck ={true}/> and <input spellCheck/> are same thing
+
+
+d. class attribute is written as "className".
+
+e. In-line styles are provided as objects.
+
+input style={{
+      padding:5,
+      color:"red",
+      border:"1px solid blue"
+   }} 
+/>
+
+
+____________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+20 july 2022:
+
+Q> What is component Nesting, reusability and configuration or the three Tenets of components?
+A>
+
+Nesting: A component can be shown inside of another.
+
+Reusability: We want to make components that can be easily reused throughout application.
+
+Configuration: We should be able to configure a component when it is created.
+
+The best example of these three is a simple component like button that can be seen in almost every web application.
+
+--> This component can be used inside any other component like Form/Image/Navbar etc and can be used throughout the application.
+
+--> We can configure Button to show different text like "Submit" or "Click Here". Also the onClick event might be different depening on usage of our application.
+
+
+Q> How to make sure that a stylesheet link pasted in HTML is loaded on the application?
+A>
+1. Open Inspect tools on the page and Go to Network.
+2. Select CSS.
+3. Refresh the page.
+You will see name of the .css file with status code inside inspect tool.
+
+====================================================================================================================================================================================================================================
+22 july 22
+Q> How do you use Fake Images to show on your projects for unit testing?
+A>
+I use faker.js which is a open source libraries that can help us automatically generate fake random data of different types (including fake commerce/finance/addresses/images) inside our project.
+
+npm install faker@5.5.3
+
+<img alt="avatar" src={faker.image.avatar()} />
+
+
+{faker.image.avatar()} --> JSX interpolation where we are going to refer 
+some JS variable or the result of JS function from the body of our JSX
+Atleast This is how we are interpreting the faker documentation.
+
+
+
+
+====================================================================================================================================================================================================================================
+23 july 22
+
+Q> How to create a reusable configurable component?
+A>
+1. Identify the JSX that appears to be duplicated 
+
+2. What is the purpose of that block of JSX? Think of a descriptive name for what it does (eg. if a JSX purpose is to display a single comment / details of a single comment so CommentDetails)
+
+3. Create a new file to house this new component - It should have the same name as that of component.
+
+4. Create a new component in the new file , paste the JSX into it.
+
+5. Make the new component configurable by using React's "props" system.
+
+
+====================================================================================================================================================================================================================================
+
+25 july 22:
+
+Q> What is use of Export statements inside a React Component?
+A>
+1. The export statement gives the rest of the Application access to the particular component that is being exported.
+
+2. export default CommentDetail
+
+3. To actually use the exported component , we still have to import the same
+into the file which needs that component.
+
+import CommentDetail from "./CommentDetail"
+
+4. This export - import create a data link between files which is used to render one component inside another (component - Nesting)
+
+
+Q> What is component hierarchy?
+A> 
+a. Its a diagram that shows different components that are being displayed inside our application and the relationship between them.
+
+b. You can show how many instances (single / multiple) every component has.
+
+c. In case of nested components we can see relation between Parent and child components(or children).
+
+====================================================================================================================================================================================================================================
+
+26 july 22:
+
+Q> What are props:
+A>
+a. System of passing data from a parent component to a child/nested component.
+
+b. The entire goal of the prop system is to somehow communicate data from the parent down to a child.  
+
+c. The ultimate goal of customizing the child is to make sure that the content it displays on the screen changes depending on application code/user interaction.
+
+d. In short it focus on customizing two thing --> How the component looks or How user interacts with it. Its all about having a parent customize how the child looks or behaves.
+
+e. A child cannot pass data back up to the parent through the prop system directly.
+
+Q> How props are passed from parent to child with an example?
+A> 
+a. There are two stages or two sides of this prop system
+	--> Information provides from parent to child
+	--> Child consumes/make use of that information 
+
+
+b. First Stage(Passing information from Parent to Child)
+
+<CommentDetail/> --> Instance of the Component
+
+<CommentDetail author= "Sam"  />  ---> Passing prop to Component(Syntax same as passing attributes like className="somevalue" to JSX)
+
+Here, 
+Parent Component = CommentDetail
+Name of the prop = author
+Value of the prop = "Sam"
+
+Different instances of Parent component will have same prop name but different value(Unique prop: value pair)
+
+
+c. stage:2 Make child component consume the prop by changing its source code
+  
+--> Main objective here is to get access to the prop that we have provided to this component.
+
+--> The prop is going to show up inside of an object that is provided as the first argument to CommentDetail() functional component.
+
+i.e const CommentDetail = (props) => {} --> By convention we refer to this as props.
+
+-->console.log(props) and see you will get the Object which you passed in first stage. In the form of Key : value or property : value pair.
+
+
+--> Now put a curly brace {}  to indicate that we will reference a JavaScript variable and inside i will reference props.author , so {props.author}
+
+
+d. So now, whenever CommentDetail will show on the screen , it going to look into props object and its going to see that there is an author property in there {props.author}. This props is actually a JS object that contains all the information that was passed down from the parent.
+
+
+====================================================================================================================================================================================================================================
+
+29 july:
+
+Q> How can we render a small component inside another big component with example?
+A>
+
+1. Lets say the Big component name is "Parent" component and small one's name is "child".
+
+2. By example , we can say a <CommentDetail/> component which is a child whose work is to display all user's comment.
+
+3. The bigger component , lets just say its a container with the buttons to Like / Dislike  the comment. Note that this is a reusable component that can be used for other purposes like approve/reject as well --><CommentDetailContainer/>
+
+4. First we will expand the bigger component.
+<CommentDetailContainer> <CommentDetailContainer/>  Like a "<div> </div>"
+
+5. Step 1..Just insert child inside it
+
+
+<CommentDetailContainer> <CommentDetail/> <CommentDetailContainer/> 
+
+
+6. Step 2 In <CommentDetailContainer/> 
+
+pass props in the functional component and call it inside a div as {props.children}
+
+<div className="content">
+            {props.children}
+        </div>
+
+7. The child will render inside the parent component.
+
+--> So props is not just an object with some properties and their respective values that we pass directly inside the component tag. This two steps are another way to communicate information into a child component. 
+
+-->The Child component passed inside parent component is also referred to as prop because its just a configuration that we provide to parent.
+
+
+
+====================================================================================================================================================================================================================================
+
+30 july 22:
+
+Q> Can you use JavaScript Objects as a React child?
+A>
+The short answer to this Question is "NO". Let me explain.
+
+We can pass numbers, string, undefined( basic primitive Data types) and even components and tags(not primitive types) as a React child but when we try to pass Objects (non-primitive data types, which are just a key:value pair inside curly braces) which React does not know what to render when provided with an object.
+
+we get a very common invariant violation error "Objects are not valid as a React child"
+
+
+
+Q> What will you do if you get this error "Objects are not valid as a React child" ?
+A>
+
+-->The error "Objects are not valid as a React child" is rather common and the solution is to manipulate the object so that it becomes a valid element.
+
+const data = {
+    product:"watermelon",
+    price: 12,
+  }
+
+<div>{data}</div>   --> This will give an error.
+
+<div>{data.product}</div> --> will render watermelon on page.
+
+
+Q> What are primitive data types?
+A>
+
+//primitive = {STRING, NUMBER, BOOLEAN, SYMBBOL, UNDEFIEND, NULL}
+//non-primitive = {ARRAY, OBJECT, FUNCTION}
+
+
+//primitive is always copied by VALUE
+var a = 1;
+var b = a;
+    //console.log(a , b) =  1 , 1
+a = 3;
+console.log(a) //3
+console.log(b) // still 1 and not 3   (always copied by value only)
+
+
+//non-primitive is always copied by REFERENCE
+var x = {name : "Jscript"};
+var y = x;
+  //console.log(x , y)     TWICE =  Object { name: "Jscript" }
+x.name = "Js";
+console.log(x) //Js
+console.log(y) //Js  {copied by reference} like pointers in C lang
+
+
+====================================================================================================================================================================================================================================
+
+1 Aug 22:
+
+Q> Create a react app that Takes user location and Current month and based on that display different UI's
+
+if user is : in northern hemisphere b/W october and march --> Its Chilly
+else : Its Summer
+
+A>
+There are three challanges that we need to face :
+
+1. Need to get user's physical location.
+2. Need to determine the current month
+3. Need to change the Text and styling based on Location + month
+
+One Approach :
+--> Use two components--
+<App/> : Has Code to determine location and month (Parent)
+
+<SeasonDisplay/> : Show different text/icons based on props. (Child)
+
+
+
+Q> How to get the location of user in react application?
+A>
+
+We can use GeoLocation API:
+
+-->The Geolocation API allows the user to provide their location to web applications if they so desire. For privacy reasons, the user is asked for permission to report location information.
+
+
+-->The Geolocation API is accessed via a call to navigator.geolocation; this will cause the user's browser to ask them for permission to access their location data. If they accept, then the browser will use the best available functionality on the device to access this information (for example, GPS).
+
+
+-->The developer can now access this location information in a couple of different ways:
+
+Geolocation.getCurrentPosition(): Retrieves the device's current location.
+
+Geolocation.watchPosition(): Registers a handler function that will be called automatically each time the position of the device changes, returning the updated location.
+
+
+
+Example:
+
+Inside our main app rendered component, we will make a call to geolocation API
+
+
+window.navigator.geolocation ---> This is the API endpoint
+
+
+It has a method called getCurrentPosition() which takes some time processing and finds out where the user is currently located.
+
+We have to pass two seperate function callbacks as arguments to getCurrentLocation() method.
+
+window.navigator.geolocation.getCurrentPosition(
+    (position) => console.log(position),         ---> Success Callback
+    (err) => console.log(err)                    ---> Failure Callback
+  );
+
+
+(position) => console.log(position) --> This callback function gets called whenever getCurrentPosition successfuly retrieves user location.
+
+(err) => console.log(err) --> This callback function gets called whenever there is an issue in retrieval process.  ---for example the user denies sharing the location with web browser.
+
+
+To Test error , Click on (i) on local host and reset location permission. It will ask next time when you reload the browser.
+ 
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+2 aug 2022
+
+
+Q> Show the timeline of what happens to our application inside the User's browser (with example)?
+
+1. JS file loaded by browser(index.js).
+
+2. Browser then interprets our JS file and see that we are trying to create an <App/> component, so App component gets created(App.js)
+
+3. The App component is a class based/functional component which get invoked and then We call Geolocation service(which takes 3-4 seconds to return position object).
+
+4. App returns JSX which gets rendered to page as HTML.
+
+Here the concern is that <App/>(functional)component gets rendered sooner than we get geolocation's success callback 
+ 
+
+
+Q> How to do location override from web browser?
+A>
+1. Open Inspect menu in chrome browser.
+2. GO to console and click on "three dots" for submenu
+3. Select sensors
+4. Observe Location in sensors and do override.
+
+
+Q> Rules of creating Class based components?
+A>
+
+1. We must create a Javascript class(introduced in ES 2015)
+JS inheritence works on prototype inheritance which is a little bit different from classic inheritance featured in Java or Ruby or similar OOP languages.
+
+
+
+ 2. It must extend to (subclass, if coming from a world of Java) React.component.
+Extending Component will give you access to functions like componentDidMount , componentDidUpdate , componentWillUnmount and render. In simple words our class is borrowing these functionalities from React. 
+
+
+3. It must define a render method that return some JSX.
+
+class App extends React.component{
+render(){
+return <div>Hello</div>
+}
+}
+
+
+Q> What are the rules of state?
+A>
+
+1. Initially usable with Class components only but now accessible in Functional components as well with the help of "hooks" system.
+
+2. State system looks similar to "Props" system but they are both very different.
+
+3. State is a JS object that contains some amount of Data that is relevant to a "singular" component.
+
+
+4. Updating "state" on a component causes the component to(almost) instantly rerender.
+
+5. State must be initialized when a component is created.
+
+6. State can "ONLY" be updated using the function "setState"
+
+
+Q> What is constructor function in React?
+
+A> 
+1. It is not a mandatory function to be used in in a React class component.
+
+2. By its nature , its actually a Java based function. This function is called anytime an instance of its class is created.
+
+3. So in other words , any time that we create a new instance of the Class component and show it on the screen , this constructor function is going to be called automatically and instantly before anything else.
+
+4. So that makes it a very good location to initialize our state.(But its not the only way to do it)
+
+
+Q> What is super function and why is it called from inside a constructor function?
+A>
+
+1. Observe Our Class Based component App ------------------------------->>>>>>class App extends React.component
+is borrowing functionality from the React.component base class.
+
+2. This base class has a constructor function of its own that goes through same amount of setup or has some code inside of it to set up our react component.
+
+3. When we define a constructor function inside of our app class , we are essentially overriding or replacing the constructor function that is inside React.component
+
+4. So we still want to make sure that all the setup code inside of this constructor function still gets called.
+
+5.Therefore, In order to make sure that the parent's or React.component constructor function gets called we call super(props);
+
+6.In short, Super is a reference to the parent's constructor function and we have to do this ceremony of defining super() with props inside constructor of a class based component, otherwise we will get a ReferenceError: this has'nt been initialised - "super() hasn't been called"
+
+
+Q> Why we need to go through all this trouble of defining super(props) in constructor and even constructor function inside a class based component?
+A>
+
+1. The entire reason we defined constructor and super functions was so that we could initialize our state object.
+
+2. only after this , we can define this.state = {} <--- which returns an object which we also call our state object, which is going to eventually contain some pieces of data or properties that are relevant to our component
+
+3. this.state = {latitude: null} this is how we will define a property called latitude and its default value null inside state object.
+
+
+============================================================================================================================================================================================================================================================================================================================================================================================
+4 aug 22:
+
+Q> How do we use this.state or state object inside our component?
+A>
+
+1.  suppose we have a state object this.state = {lat:null} and we want to use this value directly inside our component's JSX.
+
+2. I can just print it inside curly braces in any div.
+return <div>latitude is {this.state.lat}</div> and it will print null on the screen.
+
+3. We can also write state object inside any function not only in JSX return()
+
+
+
+Q> Give an example for when updating state on a component causes the component to (almost instantly rerender)?
+A> 
+
+this.state ={lat: null};
+
+--> initial value of this key/property in state object is null
+
+We want to replace the value null with user's current latitude.
+
+--> First, We will use getCurrentPosition function to get the object which 
+contains user's all location data.
+
+window.navigator.geolocation.getCurrentPosition(
+	(position)=>{ console.log(position)}
+)
+
+--> This position object contains data relevant to user's location, which you can verify from console
+
+--> As we know we can only change or set the value of lat property using setState function so we now do the same.
+
+
+window.navigator.geolocation.getCurrentPosition(
+	(position)=>{ this.setState({})} <--- Here i will pass an object that has an update on state object.
+)
+
+
+window.navigator.geolocation.getCurrentPosition(
+	(position)=>{ this.setState({lat:position.coords.latitude})}
+)
+  
+Here setState is a function that gets put on our app component automatically when we extend React.component
+
+
+
+
+===============================BADPRACTICE===============================
+
+We never ever want to initialize any work/request anything like that from a call in render method.
+
+It is because render() method is called all the time and way more frequently.
+
+So its better if you put it inside constructor() of class which helps preventing double fetching our request when the render method is called after constructor function.
+
+So its a BAD practice
+
+===============================BADPRACTICE===============================
+
+
+
+
+8 Aug 2022:
+
+Q> What are different Rules of State?
+A>
+
+--> Only usable with class components
+--> Don't confuse State with props
+--> "State" is a JS object that contains data relevant to a component
+--> Updating "State" on a component causes the component to (almost) instantly rerender.
+--> State must be initialized when a component is created.
+--> State can only be updated using the function "setState".
+
+
+
+
+
+===============================BADPRACTICE===============================
+In order to change/update/manipulate our state property, never do direct assignment e.g.
+
+this.state.lat = position.coords.latitude //Its very wrong:(
+
+Always use setState function that takes an object as an argument which updates our state 
+
+only exception where you can use direct assignment of state , is when you initialize it, e.g
+
+this.state = {lat:null}  //its ok :|
+
+===============================BADPRACTICE===============================
+
+
+
+
+
+Q> Explain what is happening in this program from the time index.js is loaded into the browser?
+
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { lat: null, long: null };
+
+    window.navigator.geolocation.getCurrentPosition(
+      (position) =>
+        this.setState({
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        }),
+      (err) => console.log(err)
+    );
+  }
+
+  render() {
+    return (
+      <>
+        <h1>The Latitude is : {this.state.lat}</h1>
+        <h2>The longitude is : {this.state.long}</h2>
+      </>
+    );
+  }
+}
+
+A> 
+1. JS file loaded by browser
+2. Instance of App component is created.
+3. App component's "constructor" function is called.
+4. State object is created and assigned to 'this.state' property.
+5. We call geolocation service.
+6. React calls the component's 'render' method.
+7. App returns JSX, gets rendered to page as HTML.
+
+----------------------->>>Some micro seconds later --------------------->>>
+
+8. We get result of geolocation
+9. We update our state object with a call to this.setState.
+10.React sees that we updated the state of a component.
+11.React sees that we updated the state of a component.
+12.React calls our 'render' method a second time
+13.Render method returns some (updated) JSX.
+
+The point to Note here is that 
+
+--> render method gets called two times, first at the beginning of the program and second time when the state is updated with geolocation 
+
+-->So for a fraction of second, there was no geolocation rendered on the UI.
+
+  
+
+============================================================================================================================================================================================================================================================================================================================================================================================
+9 aug 22:
+
+Q> How can you handle error / update error with conditional rendering example
+
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { lat: null, long: null, errorMessage: "" };
+                              //3. Add a property called errorMessage in 					in the state object initially as null 						string 
+
+    window.navigator.geolocation.getCurrentPosition(
+      (position) =>
+        this.setState({
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        }),
+      (err) => this.setState({ errorMessage: err.message })
+		//2.second argument in getCurrentPosition is a function that 		 returns error object. This particular object has a property 			called message.  
+    );
+  }
+
+  render() {
+    if (this.state.lat || (this.state.long && !this.state.errorMessage)) {
+      return (
+        <div>
+          Lat : {this.state.lat} longitude: {this.state.long}
+        </div>
+      );
+    }
+    if ((this.state.errorMessage && !this.state.lat) || this.state.long) {
+      return <div>Error : {this.state.errorMessage}</div>;
+		//3. Display this error message in this conditional 			rendering
+    }
+
+    return <div>Loading!</div>;
+  }
+}
+
+
+
+Q> What are the other ways to initialize state?
+A>
+
+1. We can use lifecycle methods to acheive the same result of updating the state.
+
+
+
+Q> Define component lifecycle methods?
+A>
+
+1. A component lifecycle method is a function that we can optionally define inside our class based component.
+
+2. If we decide to define these methods, they will be called by react automatically at certain points during the component's lifecycle.
+
+3. These methods are :
+
+--> componentDidMount (content visible on the screen) --> Good place to do Data loading
+
+--> componentDidUpdate (Sit and wait for updates) --> Good place to do more data-loading when state/props change
+
+--> componentWillUnmount (Sit and wait until this component is no longer visible on the screen) --> Good place to do cleanup(especially to non-react stuff)
+
+Technically 
+CONSTRUCTOR (Good Place to do one time setup, state initialize/data loading) 
+
+and render(Avoid doing anything besides returning JSX) method are also a lifecycle method because they get called at some point during the lifecycle of a component.
+
+--> Please make a note that , render method always gets called before componentDidUpdate method, it is because render method always returns some JSX which componentDidUpdate updates. 
+
+ (you can check it yourself by console.log in render method)
+
+
+
+Q> Why we need these lifecycle methods?
+A>
+
+
+
